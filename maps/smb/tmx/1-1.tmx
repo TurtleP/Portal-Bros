@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="80" height="15" tilewidth="16" tileheight="16" nextobjectid="211">
+ <tileset firstgid="1" name="base" tilewidth="16" tileheight="16" spacing="1" tilecount="132" columns="22">
+  <image source="../../../graphics/game/smbtiles.png" width="374" height="102"/>
+ </tileset>
+ <layer name="topTiles" width="80" height="15">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33,34,34,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33,34,35,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33,34,35,0,0,0,0,0,33,34,34,34,35,0,0,0,0,55,56,56,57,0,0,0,0,0,33,34,35,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,55,56,57,0,0,0,0,33,34,34,34,35,0,
+0,0,0,0,0,0,0,0,33,34,35,0,0,0,0,0,0,0,0,55,56,57,0,0,0,0,0,55,56,56,56,57,0,0,0,0,0,0,0,0,0,0,0,0,0,55,56,57,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,55,56,56,56,57,0,
+0,0,0,0,0,0,0,0,55,56,57,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,7,8,7,8,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,17,0,0,0,0,0,0,0,0,0,16,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,8,7,0,
+0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,16,17,0,0,0,0,0,0,38,39,0,0,3,0,0,0,0,0,0,38,39,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,24,25,26,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,16,17,0,0,0,0,0,0,0,0,38,39,0,0,0,0,0,0,38,39,0,24,25,26,0,0,0,0,0,38,39,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+24,25,27,25,26,0,0,0,0,0,0,4,5,5,5,6,24,25,26,0,0,0,0,4,5,6,0,0,38,39,0,0,0,0,0,0,0,0,38,39,0,4,5,5,6,0,38,39,24,25,27,25,26,0,0,0,0,38,39,4,5,5,5,6,24,25,26,0,0,0,0,4,5,6,0,0,0,0,0,0,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,2,2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,2,2,2,2,2,2,2,2,2
+</data>
+ </layer>
+ <objectgroup name="topObjects">
+  <object id="4" name="tile" x="0" y="208" width="400" height="32"/>
+  <object id="5" name="tile" type="coinblock" x="256" y="144" width="16" height="16"/>
+  <object id="6" name="tile" type="coinblock" x="352" y="80" width="16" height="16"/>
+  <object id="7" name="tile" type="breakable" x="320" y="144" width="16" height="16"/>
+  <object id="8" name="tile" type="breakable" x="352" y="144" width="16" height="16"/>
+  <object id="9" name="tile" type="breakable" x="384" y="144" width="16" height="16"/>
+  <object id="10" name="tile" type="coinblock" x="336" y="144" width="16" height="16">
+   <properties>
+    <property name="item" value="mushroom"/>
+   </properties>
+  </object>
+  <object id="11" name="tile" type="coinblock" x="368" y="144" width="16" height="16"/>
+  <object id="19" name="tile" x="32" y="160" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="43" name="mario" x="96" y="192" width="16" height="16"/>
+  <object id="45" name="tile" x="16" y="176" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="46" name="tile" x="32" y="176" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="47" name="tile" x="48" y="176" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="48" name="tile" x="48" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="49" name="tile" x="32" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="50" name="tile" x="16" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="51" name="tile" x="0" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="52" name="tile" x="64" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="53" name="tile" x="240" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="54" name="tile" x="224" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="55" name="tile" x="208" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="56" name="tile" x="192" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="57" name="tile" x="176" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="58" name="tile" x="256" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="59" name="tile" x="272" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="60" name="tile" x="272" y="176" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="61" name="tile" x="288" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="69" name="tile" x="144" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="70" name="tile" x="160" y="64" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="71" name="tile" x="160" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="72" name="tile" x="144" y="64" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="73" name="tile" x="128" y="64" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="74" name="tile" x="128" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="76" name="tile" x="816" y="176" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="77" name="tile" x="800" y="176" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="78" name="tile" x="800" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="79" name="tile" x="784" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="80" name="tile" x="800" y="160" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="81" name="tile" x="816" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="82" name="tile" x="784" y="176" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="83" name="tile" x="832" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="84" name="tile" x="768" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="87" name="tile" x="1056" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="88" name="tile" x="1040" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="91" name="tile" x="1040" y="176" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="93" name="tile" x="1024" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="96" name="tile" x="976" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="97" name="tile" x="960" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="99" name="tile" x="992" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="101" name="tile" x="1008" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="102" name="tile" x="944" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="105" name="tile" x="400" y="208" width="400" height="32"/>
+  <object id="106" name="tile" x="800" y="208" width="304" height="32"/>
+  <object id="107" name="tile" x="1136" y="208" width="144" height="32"/>
+  <object id="108" name="tile" x="400" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="109" name="tile" x="368" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="110" name="tile" x="384" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="111" name="tile" x="336" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="112" name="tile" x="320" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="113" name="tile" x="304" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="114" name="tile" x="304" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="115" name="tile" x="336" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="116" name="tile" x="320" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="117" name="tile" x="464" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="118" name="tile" x="448" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="119" name="tile" x="432" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="120" name="tile" x="432" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="121" name="tile" x="464" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="122" name="tile" x="448" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="123" name="tile" x="496" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="124" name="tile" x="496" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="125" name="tile" x="480" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="126" name="tile" x="480" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="137" name="tile" x="608" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="138" name="tile" x="608" y="16" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="139" name="tile" x="624" y="16" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="140" name="tile" x="592" y="16" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="141" name="tile" x="576" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="142" name="tile" x="576" y="16" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="143" name="tile" x="592" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="144" name="tile" x="624" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="145" name="tile" x="736" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="146" name="tile" x="736" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="147" name="tile" x="752" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="148" name="tile" x="720" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="149" name="tile" x="720" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="150" name="tile" x="752" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="151" name="tile" x="1088" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="152" name="tile" x="1088" y="16" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="153" name="tile" x="1104" y="16" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="154" name="tile" x="1072" y="16" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="155" name="tile" x="1072" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="156" name="tile" x="1104" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="157" name="tile" x="1200" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="158" name="tile" x="1200" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="159" name="tile" x="1216" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="160" name="tile" x="1184" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="161" name="tile" x="1184" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="162" name="tile" x="1216" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="166" name="tile" x="1232" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="167" name="tile" x="1232" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="169" name="tile" x="1248" y="48" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="170" name="tile" x="1248" y="32" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="171" name="tile" x="1152" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="172" name="tile" x="1136" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="173" name="tile" x="1168" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="174" name="tile" type="pipe" x="448" y="176" width="16" height="16"/>
+  <object id="175" name="tile" type="pipe" x="464" y="176" width="16" height="16"/>
+  <object id="176" name="tile" type="pipe" x="448" y="192" width="16" height="16"/>
+  <object id="177" name="tile" type="pipe" x="464" y="192" width="16" height="16"/>
+  <object id="178" name="tile" type="pipe" x="624" y="176" width="16" height="16"/>
+  <object id="179" name="tile" type="pipe" x="624" y="160" width="16" height="16"/>
+  <object id="180" name="tile" type="pipe" x="608" y="160" width="16" height="16"/>
+  <object id="181" name="tile" type="pipe" x="608" y="176" width="16" height="16"/>
+  <object id="182" name="tile" type="pipe" x="608" y="192" width="16" height="16"/>
+  <object id="183" name="tile" type="pipe" x="624" y="192" width="16" height="16"/>
+  <object id="184" name="tile" type="pipe" x="736" y="144" width="16" height="16"/>
+  <object id="185" name="tile" type="pipe" x="752" y="144" width="16" height="16"/>
+  <object id="186" name="tile" type="pipe" x="736" y="160" width="16" height="16"/>
+  <object id="187" name="tile" type="pipe" x="752" y="160" width="16" height="16"/>
+  <object id="188" name="tile" type="pipe" x="736" y="176" width="16" height="16"/>
+  <object id="189" name="tile" type="pipe" x="752" y="176" width="16" height="16"/>
+  <object id="190" name="tile" type="pipe" x="736" y="192" width="16" height="16"/>
+  <object id="191" name="tile" type="pipe" x="752" y="192" width="16" height="16"/>
+  <object id="192" name="tile" type="pipe" x="912" y="144" width="16" height="16"/>
+  <object id="193" name="tile" type="pipe" x="928" y="144" width="16" height="16"/>
+  <object id="194" name="tile" type="pipe" x="912" y="160" width="16" height="16"/>
+  <object id="195" name="tile" type="pipe" x="928" y="160" width="16" height="16"/>
+  <object id="196" name="tile" type="pipe" x="912" y="176" width="16" height="16"/>
+  <object id="197" name="tile" type="pipe" x="928" y="176" width="16" height="16"/>
+  <object id="198" name="tile" type="pipe" x="912" y="192" width="16" height="16"/>
+  <object id="199" name="tile" type="pipe" x="928" y="192" width="16" height="16"/>
+  <object id="200" name="tile" x="656" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="201" name="tile" x="688" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="202" name="tile" x="672" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="203" name="tile" x="704" y="192" width="16" height="16">
+   <properties>
+    <property name="passive" value="1"/>
+   </properties>
+  </object>
+  <object id="204" name="tile" type="coinblock" x="1024" y="128" width="16" height="16" visible="0">
+   <properties>
+    <property name="item" value="oneup"/>
+   </properties>
+  </object>
+  <object id="205" name="tile" type="breakable" x="1216" y="144" width="16" height="16"/>
+  <object id="206" name="tile" type="breakable" x="1248" y="144" width="16" height="16"/>
+  <object id="207" name="tile" type="coinblock" x="1232" y="144" width="16" height="16"/>
+  <object id="208" name="goomba" x="352" y="192" width="16" height="16"/>
+  <object id="209" name="goomba" x="640" y="192" width="16" height="16"/>
+ </objectgroup>
+</map>
