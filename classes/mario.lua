@@ -62,7 +62,7 @@ function mario:init(x, y, properties, screen, size, lives)
             {-4, -4, 9},
         },
         {
-            {-3, -3, 4}
+            {-3, 14, 4}
         }
     }
 
@@ -336,17 +336,17 @@ function mario:draw()
     end
 
     local size = math.max(1, math.min(self.size, 3))
-    if not self.portalGun then
-        local scale = 1
-        if self.scale == -1 then
-            scale = 2
-        end
-
-        love.graphics.draw(self.graphic, self.quads[scale][self.quadi], self.x + self.offsets[1][size][scale], self.y - self.offsets[1][size][3], 0)
-    else
-        love.graphics.draw(self.graphic, self.quads[self:getPointingQuad()][self.quadi], self.x + self.offsets[2][size][scale], self.y - self.offsets[2][size][3], 0)
+    local scale = 1
+    if self.scale == -1 then
+        scale = 2
     end
 
+    if not self.portalGun then
+        love.graphics.draw(self.graphic, self.quads[scale][self.quadi], self.x + self.offsets[1][size][scale], self.y - self.offsets[1][size][3], 0)
+    else
+        love.graphics.draw(self.graphic, self.quads[self:getPointingQuad()][self.quadi], self.x + self.offsets[2][size][scale], self.y - self.offsets[2][size][3], 0, self.scale, 1)
+    end
+    
     if self.scissor then
         love.graphics.setScissor()
     end
@@ -369,14 +369,6 @@ function mario:getPointingQuad()
         ret = 1
     elseif angle > math.pi / 13 and angle < 2.1 then
         ret = 4
-    elseif angle > math.pi / 2 and angle < math.pi * 2 / 3 then
-        ret = 5
-    elseif angle < 4.5 and angle > 3.4 then
-        ret  = 6
-    elseif angle < 3.4 and angle > 2.8 then
-        ret = 7
-    elseif angle < 2.8 and angle > 1.5 then
-        ret = 8
     end
 
     return ret
@@ -450,17 +442,17 @@ function mario:downCollide(name, data)
 
     if name == "koopagreen" then
         if not self.jumping then
-            if data.stomped then
-                if data.slide then
-                    data.slide = false
-                    data.speedx = 0
-                else
-                    data.slide = true
-                    data.speedx = 100
-                end
-            else
-                self.speedy = -3
+            if not data.stomped then
                 data:stomp()
+                self.speedy = -3
+                self.jumping = true
+            else
+                if self.x + self.width / 2 < data.x + data.width / 2 then
+                    data:kick("right")
+                else
+                    data:kick("left")
+                end
+                self.speedy = -3
                 self.jumping = true
             end
             return true
@@ -495,12 +487,12 @@ function mario:leftCollide(name, data)
             if data.slide then
                 self:shrink()
             else
-                data.slide = true
-                data.speedx = -100
+                data:kick("left")
             end
         else
             self:shrink()
         end
+        return false
     end
 
     if name == "powerup" then
@@ -529,12 +521,12 @@ function mario:rightCollide(name, data)
             if data.slide then
                 self:shrink()
             else
-                data.slide = true
-                data.speedx = 100
+                data:kick("right")
             end
         else
             self:shrink()
         end
+        return false
     end
 
     if name == "powerup" then

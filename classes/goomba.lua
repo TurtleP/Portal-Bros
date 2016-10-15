@@ -59,6 +59,18 @@ function goomba:draw()
     pushPop(self)
 end
 
+function goomba:shotted(dir)
+    if dir == "right" then
+        self.speedx = 80
+    else
+        self.speedx = -80
+    end
+    self.speedy = -2.5
+    self.passive = true
+
+    playSound(enemyShotSound)
+end
+
 function goomba:stomp()
     self.dead = true
     playSound(stompSound)
@@ -80,7 +92,7 @@ end
 function goomba:leftCollide(name, data)
     if name == "tile" then
         self.speedx = -self.speedx
-        return true
+        return false
     end
 
     if name == "portal" then
@@ -91,7 +103,7 @@ end
 function goomba:rightCollide(name, data)
     if name == "tile" then
         self.speedx = -self.speedx
-        return true
+        return false
     end
 
     if name == "portal" then

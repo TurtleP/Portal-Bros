@@ -34,8 +34,10 @@ function physicsupdate(dt)
 							for maskObjectIndex = 1, #objects[objData.mask[maskIndex]] do
 								local obj2Data = objects[objData.mask[maskIndex]][maskObjectIndex]
 
-								if objData.screen == obj2Data.screen then
-									hor, ver = checkCollision(objData, objectNames[objectNameIndex], obj2Data, objData.mask[maskIndex], dt)
+								if objData ~= obj2Data then
+									if objData.screen == obj2Data.screen then
+										hor, ver = checkCollision(objData, objectNames[objectNameIndex], obj2Data, objData.mask[maskIndex], dt)
+									end
 								end
 							end
 						end

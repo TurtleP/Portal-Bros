@@ -175,7 +175,8 @@ function love.load()
     growSound = love.audio.newSource("audio/mushroomeat.ogg")
     powerupSound = love.audio.newSource("audio/mushroomappear.ogg")
     oneupSound = love.audio.newSource("audio/oneup.ogg")
-
+    enemyShotSound = love.audio.newSource("audio/shot.ogg")
+    
     portalShotSound = {love.audio.newSource("audio/portal1open.ogg"), love.audio.newSource("audio/portal2open.ogg")}
     portalEnterSound = love.audio.newSource("audio/portalenter.ogg")
     portalFizzleSound = love.audio.newSource("audio/portalfizzle.ogg")
@@ -202,12 +203,14 @@ function love.load()
     }
     objects["coin"] = tiled:getObjects("coin")
     objects["goomba"] = tiled:getObjects("goomba")
-    objects["koopagreen"] = tiled:getObjects("koopagreen")
+    objects["koopagreen"] = tiled:getObjects("koopagreen") or {}
     objects["coinblock"] = tiled:getObjects("coinblock")
     objects["pipe"] = tiled:getObjects("pipe")
     objects["powerup"] = {}
     objects["portal"] = {}
     objects["portalshot"] = {}
+
+    table.insert(objects["koopagreen"], koopagreen:new(128, 0, {}, "top"))
 
     player = objects["mario"][1]
 
@@ -350,6 +353,12 @@ function checkForRemovals()
         end
     end
 
+    for x = #objects["powerup"], 1, -1 do
+        if objects["powerup"][x].remove then
+            table.remove(objects["powerup"], x)
+        end
+    end
+
     for x = #objects["portalshot"], 1, -1 do
         if objects["portalshot"][x].remove then
             table.remove(objects["portalshot"], x)
@@ -372,7 +381,7 @@ end
 function love.update(dt)
     dt = math.min(1/60, dt)
 
-    cameraObjects = checkrectangle(getScrollValue(), 0, 400, 240, {"exclude", player}, nil, true)
+    cameraObjects = checkrectangle(getScrollValue(), 0, 400, 248, {"exclude", player}, nil, true)
 
     checkForRemovals()
 
@@ -380,6 +389,10 @@ function love.update(dt)
         if cameraObjects[i][2].screen == player.screen then
             if cameraObjects[i][2].update then
                 cameraObjects[i][2]:update(dt)
+            end
+
+            if cameraObjects[i][2].y > love.graphics.getHeight() then
+                cameraObjects[i][2].remove = true
             end
         end
     end
@@ -445,6 +458,8 @@ function love.draw()
     if printKey then
         fontPrint("pressed: " .. printKey, 0, 48)
     end
+
+    gamepad:draw()
 end
 
 function love.keypressed(key)
@@ -482,6 +497,12 @@ function love.keyreleased(key)
         objects["mario"][1]:stopJump()
     elseif key == "b" then
         objects["mario"][1]:run(false)
+    end
+end
+
+function love.mousepressed(x, y, button)
+    if button == 1 then
+        gamepad:setPosition(x, y)
     end
 end
 

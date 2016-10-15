@@ -119,7 +119,7 @@ function portal:update(dt)
             if check[i][2].portaled then
                 check[i][2].speedy = math.min(check[i][2].speedy, 12) --check speed
                 if self.dir == 1 then --exit upward
-                    if check[i][2].y + check[i][2].height / 2 < self.y then
+                    if (check[i][2].y + check[i][2].speedy) + check[i][2].height / 2 < self.y then
                         check[i][2].scissor = {}
                         --check[i][2].speedy = math.max(check[i][2].speedy, -12) --check speed
                         check[i][2].portaled = false

@@ -4,6 +4,9 @@ function joystick:init()
     self.dx = 0
     self.dy = 0
 
+    self.x = 0
+    self.y = 0
+
     self.r = 16 --deazone?
 
     self.rightStick = false
@@ -31,10 +34,23 @@ function joystick:update(dt)
         self.dy = math.min(self.dy + 48 * dt, self.r)
     end
 
-    self:stickUp(self.isDown("cstickup"))
-    self:stickRight(self.isDown("cstickright"))
-    self:stickDown(self.isDown("cstickdown"))
-    self:stickLeft(self.isDown("cstickleft"))
+    if love.system.getModel():find("n3ds") then
+        self:stickUp(self.isDown("cstickup"))
+        self:stickRight(self.isDown("cstickright"))
+        self:stickDown(self.isDown("cstickdown"))
+        self:stickLeft(self.isDown("cstickleft"))
+    else
+        self.held = love.mouse.isDown(1)
+        if self.held then
+            self.dx = util.clamp(love.mouse.getX() - self.x, -self.r, self.r)
+            self.dy = util.clamp(love.mouse.getY() - self.y, -self.r, self.r)
+        end
+    end
+end
+
+function joystick:setPosition(x, y)
+    self.x = x
+    self.y = y
 end
 
 function joystick:isMoved()
@@ -58,16 +74,20 @@ function joystick:stickDown(move)
 end
 
 function joystick:draw() --for debug
-    love.graphics.setColor(200, 200, 200)
+    if self.held then
+        love.graphics.setScreen("bottom")
 
-    love.graphics.circle("fill", 60 + (self.dx / self.r) * self.r, 60 + (self.dy / self.r) * self.r, self.r / 2, self.r)
-    love.graphics.circle("line", 60 + (self.dx / self.r) * self.r, 60 + (self.dy / self.r) * self.r, self.r / 2, self.r)
-    
-    love.graphics.circle("line", 60, 60, self.r, self.r)
+        love.graphics.setColor(200, 200, 200)
 
-    love.graphics.line(60, 60, 60 + self.r * self:getX(), 60 + self.r * self:getY())
-    
-    love.graphics.setColor(255, 255, 255)
+        love.graphics.circle("fill", self.x + (self.dx / self.r) * self.r, self.y + (self.dy / self.r) * self.r, self.r / 2, self.r)
+        love.graphics.circle("line", self.x + (self.dx / self.r) * self.r, self.y + (self.dy / self.r) * self.r, self.r / 2, self.r)
+        
+        love.graphics.circle("line", self.x, self.y, self.r, self.r)
+
+        love.graphics.line(self.x, self.y, self.x + self.r * self:getX(), self.y + self.r * self:getY())
+        
+        love.graphics.setColor(255, 255, 255)
+    end
 end
 
 function joystick:getX()

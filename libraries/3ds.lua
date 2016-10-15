@@ -72,7 +72,7 @@ function love.graphics.draw(...)
 	if type(args[2]) ~= "userdata" then
 		olddraw(args[1], args[2] + args[1]:getWidth() / 2, args[3] + args[1]:getHeight() / 2, args[4], 1, 1, args[1]:getWidth() / 2, args[1]:getHeight() / 2)
 	else
-		olddraw(args[1], args[2], args[3], args[4], args[5])
+		olddraw(args[1], args[2], args[3], args[4], args[5], args[6], args[7])
 	end
 end
 
@@ -96,10 +96,6 @@ local oldCircle = love.graphics.circle
 function love.graphics.circle(mode, x, y, r, segments)
 	local x = x or 0
 	local y = y or 0
-	if love.graphics.getScreen() == "bottom" then
-		x = x + 40
-		y = y + 240
-	end
 	oldCircle(mode, x, y, r, segments)
 end
 
@@ -132,20 +128,6 @@ function love.keyreleased(key)
 			break
 		end
 	end
-		
-	if key == "1" or key == "2" then
-		love.system.setModel(tonumber(key))
-	end
-end
-
-local oldDown = love.keyboard.isDown
-function love.keyboard.isDown(key)
-	for k, v in pairs(BUTTONCONFIG) do
-		if key == v then
-			print("ayy")
-			return oldDown(key)
-		end
-	end
 end
 
 function math.clamp(low, n, high) 
@@ -154,7 +136,7 @@ end
 
 local oldMousePressed = love.mousepressed	
 function love.mousepressed(x, y, button)
-	x, y = math.clamp(0, x - 40, 320), math.clamp(0, y - 240, 240)
+	x, y = math.clamp(0, x - 40, 320)+40, math.clamp(0, y - 240, 240) + 240
 
 	if oldMousePressed then
 		oldMousePressed(x, y, 1)
