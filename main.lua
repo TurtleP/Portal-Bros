@@ -15,6 +15,8 @@ require 'classes.coin'
 require 'classes.mushroom'
 require 'classes.oneup'
 require 'classes.goomba'
+require 'classes.koopagreen'
+
 
 require 'classes.portal'
 require 'classes.portalshot'
@@ -111,6 +113,15 @@ function love.load()
         end
     end
 
+    koopagreenImage = love.graphics.newImage("graphics/objects/koopagreen.png")
+    koopagreenQuads = {}
+    for y = 1, 4 do
+        koopagreenQuads[y] = {}
+        for x = 1, 3 do
+            koopagreenQuads[y][x] = love.graphics.newQuad((x - 1) * 16, (y - 1) * 24, 16, 24, koopagreenImage:getWidth(), koopagreenImage:getHeight())
+        end
+    end
+
     coinImage = love.graphics.newImage("graphics/objects/coin.png")
     coinQuads = {}
     for y = 1, 4 do
@@ -191,6 +202,7 @@ function love.load()
     }
     objects["coin"] = tiled:getObjects("coin")
     objects["goomba"] = tiled:getObjects("goomba")
+    objects["koopagreen"] = tiled:getObjects("koopagreen")
     objects["coinblock"] = tiled:getObjects("coinblock")
     objects["pipe"] = tiled:getObjects("pipe")
     objects["powerup"] = {}
@@ -323,6 +335,12 @@ function checkForRemovals()
     for x = #objects["goomba"], 1, -1 do
         if objects["goomba"][x].remove then
             table.remove(objects["goomba"], x)
+        end
+    end
+
+    for x = #objects["koopagreen"], 1, -1 do
+        if objects["koopagreen"][x].remove then
+            table.remove(objects["koopagreen"], x)
         end
     end
 

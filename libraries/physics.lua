@@ -10,6 +10,7 @@ local objectNames =
 {
 	"mario",
 	"goomba",
+	"koopagreen",
 	"portalshot",
 	"powerup"
 }

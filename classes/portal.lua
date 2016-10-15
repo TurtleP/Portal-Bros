@@ -60,6 +60,7 @@ function portal:init(x, y, rotation, i, screen)
     {
         "mario",
         "goomba",
+        "koopagreen",
         "powerup"
     }
 
