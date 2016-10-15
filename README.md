@@ -21,5 +21,5 @@ You **must** have a custom firmware on your 3DS such as Luma3DS to install!
 
 | System            | FPS    |
 | ----------------- |:------:|
-| Nintendo 3DS      | 20-30  |
+| Nintendo 3DS      | 15-30  |
 | New Nintendo 3DS  | 45-60  |
