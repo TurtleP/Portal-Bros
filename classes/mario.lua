@@ -13,6 +13,7 @@ function mario:init(x, y, properties, screen, size, lives)
         "barrier",
         "tile",
         "goomba",
+        "koopagreen",
         "coinblock",
         "coin",
         "pipe",
@@ -418,6 +419,11 @@ function mario:upCollide(name, data)
         self:shrink()
         return false
     end
+
+    if name == "koopagreen" then
+        self:shrink()
+        return false
+    end
 end
 
 function mario:downCollide(name, data)
@@ -438,6 +444,25 @@ function mario:downCollide(name, data)
             self.speedy = -3
             data:stomp()
             self.jumping = true
+            return true
+        end
+    end
+
+    if name == "koopagreen" then
+        if not self.jumping then
+            if data.stomped then
+                if data.slide then
+                    data.slide = false
+                    data.speedx = 0
+                else
+                    data.slide = true
+                    data.speedx = 100
+                end
+            else
+                self.speedy = -3
+                data:stomp()
+                self.jumping = true
+            end
             return true
         end
     end
@@ -465,6 +490,19 @@ function mario:leftCollide(name, data)
         return false
     end
 
+    if name == "koopagreen" then
+        if data.stomped then
+            if data.slide then
+                self:shrink()
+            else
+                data.slide = true
+                data.speedx = -100
+            end
+        else
+            self:shrink()
+        end
+    end
+
     if name == "powerup" then
         data:collect(self)
     end
@@ -484,6 +522,19 @@ function mario:rightCollide(name, data)
     if name == "goomba" then
         self:shrink()
         return false
+    end
+
+    if name == "koopagreen" then
+        if data.stomped then
+            if data.slide then
+                self:shrink()
+            else
+                data.slide = true
+                data.speedx = 100
+            end
+        else
+            self:shrink()
+        end
     end
 
     if name == "powerup" then
