@@ -10,6 +10,8 @@ function joystick:init()
     self.leftStick = false
     self.upStick = false
     self.downStick = false
+
+    self.isDown = love.keyboard.isDown
 end
 
 function joystick:update(dt)
@@ -29,21 +31,10 @@ function joystick:update(dt)
         self.dy = math.min(self.dy + 48 * dt, self.r)
     end
 
-    --[[if not self.rightStick and not self.leftStick then
-        if self.dx > 0 then
-            self.dx = self.dx - 48 * dt
-        elseif self.dx < 0 then
-            self.dx = self.dx + 48 * dt
-        end
-    end
-    
-    if not self.upStick and not self.downStick then
-        if self.dy > 0 then
-            self.dy = self.dy - 48 * dt
-        elseif self.dy < 0 then
-            self.dy = self.dy + 48 * dt
-        end
-    end]]
+    self:stickUp(self.isDown("cstickup"))
+    self:stickRight(self.isDown("cstickright"))
+    self:stickDown(self.isDown("cstickdown"))
+    self:stickLeft(self.isDown("cstickleft"))
 end
 
 function joystick:isMoved()

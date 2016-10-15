@@ -24,14 +24,14 @@ BUTTONCONFIG =
 	["down"] = "s",
 	["rbutton"] = "e",
 	["lbutton"] = "q",
-	["cpadright"] = "right",
-	["cpadleft"] = "left",
-	["cpadup"] = "up",
-	["cpaddown"] = "down",
-	["cstickleft"] = "",
-	["cstickright"] ="",
-	["cstickup"] = "",
-	["cstickdown"] = ""
+	["cpadright"] = "",
+	["cpadleft"] = "",
+	["cpadup"] = "",
+	["cpaddown"] = "",
+	["cstickleft"] = "left",
+	["cstickright"] = "right",
+	["cstickup"] = "up",
+	["cstickdown"] = "down"
 }
 
 function love.graphics.setDepth(depthValue)
@@ -135,6 +135,16 @@ function love.keyreleased(key)
 		
 	if key == "1" or key == "2" then
 		love.system.setModel(tonumber(key))
+	end
+end
+
+local oldDown = love.keyboard.isDown
+function love.keyboard.isDown(key)
+	for k, v in pairs(BUTTONCONFIG) do
+		if key == v then
+			print("ayy")
+			return oldDown(key)
+		end
 	end
 end
 

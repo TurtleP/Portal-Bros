@@ -206,6 +206,8 @@ function love.load()
     coinCounterTimer = 0
     coinCounterQuadi = 1
 
+    leveltime = 400
+
     gamepad = joystick:new()
 
     if not love.math then
@@ -222,6 +224,10 @@ function fontPrint(text, x, y)
             startx = x - i * 9
             y = y + 8
         else
+            love.graphics.setColor(0, 0, 0)
+            love.graphics.draw(fontImage, fontQuads[text:sub(i, i)], (startx - 1) + (i - 1) * 9, y - 1)
+            
+            love.graphics.setColor(255, 255, 255)
             love.graphics.draw(fontImage, fontQuads[text:sub(i, i)], startx + (i - 1) * 9, y)
         end
     end
@@ -230,6 +236,10 @@ end
 function smallPrint(text, x, y)
     local x = math.floor(x)
     for i = 1, #text do
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.draw(smallFontImage, smallFontQuads[text:sub(i, i)], (x - 1) + (i - 1) * 5, y - 1)
+        
+        love.graphics.setColor(255, 255, 255)
         love.graphics.draw(smallFontImage, smallFontQuads[text:sub(i, i)], x + (i - 1) * 5, y)
     end
 end
@@ -403,18 +413,6 @@ function love.draw()
         v:draw()
     end
 
-    if player then
-        if player.screen == "bottom" then
-            love.graphics.setScreen("top")
-            love.graphics.setColor(0, 0, 0)
-            love.graphics.rectangle("fill", 0, 0, 400, 240)
-        else
-            love.graphics.setScreen("bottom")
-            love.graphics.setColor(0, 0, 0)
-            love.graphics.rectangle("fill", 0, 0, 320, 240)
-        end
-    end
-
     love.graphics.setScreen(objects["mario"][1].screen)
     love.graphics.setColor(255, 255, 255)
     fontPrint("mario|" .. addZeros(marioScore, 6), love.graphics.getWidth() * 0.08, 16)
@@ -425,6 +423,10 @@ function love.draw()
     fontPrint("world| 1-1", love.graphics.getWidth() * 0.57, 16)
 
     fontPrint("time|inf", love.graphics.getWidth() * 0.8, 16)
+
+    if printKey then
+        fontPrint("pressed: " .. printKey, 0, 48)
+    end
 end
 
 function love.keypressed(key)
@@ -442,16 +444,6 @@ function love.keypressed(key)
         objects["mario"][1]:shootPortal(1)
     elseif key == "rbutton" then
         objects["mario"][1]:shootPortal(2)
-    end
-
-    if key == "cpadup" then
-        gamepad:stickUp(true)
-    elseif key == "cpadright" then
-        gamepad:stickRight(true)
-    elseif key == "cpaddown" then
-        gamepad:stickDown(true)
-    elseif key == "cpadleft" then
-        gamepad:stickLeft(true)
     end
 
     if key == "select" then
@@ -472,16 +464,6 @@ function love.keyreleased(key)
         objects["mario"][1]:stopJump()
     elseif key == "b" then
         objects["mario"][1]:run(false)
-    end
-
-    if key == "cpadup" then
-        gamepad:stickUp(false)
-    elseif key == "cpadright" then
-        gamepad:stickRight(false)
-    elseif key == "cpaddown" then
-        gamepad:stickDown(false)
-    elseif key == "cpadleft" then
-        gamepad:stickLeft(false)
     end
 end
 

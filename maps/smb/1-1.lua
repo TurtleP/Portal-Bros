@@ -44,7 +44,7 @@ return {
       name = "topTiles",
       x = 0,
       y = 0,
-      width = 80,
+      width = 120,
       height = 15,
       visible = false,
       opacity = 1,
