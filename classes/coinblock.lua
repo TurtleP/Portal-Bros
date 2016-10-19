@@ -38,11 +38,6 @@ function coinblock:init(x, y, properties, screen)
 end
 
 function coinblock:update(dt)
-    if self.item then
-        self.timer = self.timer + 4 * dt
-        self.quadi = math.floor(self.timer % 4) + 1
-    end
-
     if self.coinTimeout then
         if self.coinTimer > 0 then
             self.coinTimer = self.coinTimer - dt
@@ -66,16 +61,17 @@ function coinblock:update(dt)
 end
 
 function coinblock:draw()
-    pushPop(self, true)
+    love.graphics.setScreen(self.screen)
 
     if not self.visible then
-        pushPop(self)
         return
     end
-    love.graphics.setScreen(self.screen)    
-    love.graphics.draw(coinBlockImage, coinBlockQuads[1][self.quadi], self.x, self.y - self.hitTimer)
 
-    pushPop(self)
+    local i = coinCounterQuadi
+    if not self.item then
+        i = 5
+    end
+    love.graphics.draw(coinBlockImage, coinBlockQuads[1][i], self.x, self.y - self.hitTimer)
 end
 
 function coinblock:bounce()

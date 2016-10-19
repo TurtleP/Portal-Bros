@@ -47,7 +47,6 @@ function love.system.getWifiStrength()
 end
 
 function love.filesystem.exists(path)
-	print(love.filesystem.getWorkingDirectory() .. "/" .. path)
 	return io.open(love.filesystem.getWorkingDirectory() .. "/" .. path) ~= nil
 end
 
@@ -139,7 +138,7 @@ function love.mousepressed(x, y, button)
 	x, y = math.clamp(0, x - 40, 320)+40, math.clamp(0, y - 240, 240) + 240
 
 	if oldMousePressed then
-		oldMousePressed(x, y, 1)
+		oldMousePressed(x, y, "l")
 	end
 end
 
@@ -148,7 +147,7 @@ function love.mousereleased(x, y, button)
 	x, y = math.clamp(0, x - 40, 320), math.clamp(0, y - 240, 240)
 
 	if oldMouseReleased then
-		oldMouseReleased(x, y, 1)
+		oldMouseReleased(x, y, "l")
 	end
 end
 

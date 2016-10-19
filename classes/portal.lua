@@ -56,6 +56,8 @@ function portal:init(x, y, rotation, i, screen)
         {252, 160, 68}
     }
 
+    self.category = 5
+
     self.portalObjects =
     {
         "mario",
@@ -117,15 +119,17 @@ function portal:update(dt)
 
         for i = 1, #check do
             if check[i][2].portaled then
-                check[i][2].speedy = math.min(check[i][2].speedy, 12) --check speed
                 if self.dir == 1 then --exit upward
-                    if (check[i][2].y + check[i][2].speedy) + check[i][2].height / 2 < self.y then
-                        check[i][2].scissor = {}
+                    if check[i][2].y + check[i][2].height / 2 < self.y then
                         --check[i][2].speedy = math.max(check[i][2].speedy, -12) --check speed
+                        
+                        check[i][2].scissor = {}
                         check[i][2].portaled = false
                     end
                 elseif self.dir == 2 then --exit downward
                     if check[i][2].y > self.y + self.height then
+                        check[i][2].speedy = math.min(check[i][2].speedy, 12) --check speed
+
                         check[i][2].scissor = {}
                         check[i][2].portaled = false
                     end
@@ -146,8 +150,6 @@ function portal:update(dt)
 end
 
 function portal:draw()
-    pushPop(self, true)
-
     love.graphics.setScreen(self.screen)
 
     local offX, offY = 0, 0
@@ -168,8 +170,6 @@ function portal:draw()
     end
 
     love.graphics.setColor(255, 255, 255)
-
-    pushPop(self)
 end
 
 function portal:fizzle()
@@ -224,7 +224,6 @@ function portal:getOther(t)
                 end
                 return {v.x + off, v.y + add, v.dir}
             else
-                print(self.i, v.i)
                 return true
             end
         end
@@ -247,4 +246,33 @@ function portal:getOtherCoords()
             return {v.x, v.y + v.glowOffsetY, v.dir}
         end
     end
+end
+
+portalparticle = class("portalparticle")
+
+function portalparticle:init(x, y, speed, color, screen)
+    self.x = x
+    self.y = y
+
+    self.life = 1
+
+    self.speedx = speed[1]
+    self.speedy = speed[2]
+
+    self.color = color
+
+    self.screen = screen
+end
+
+function portalparticle:update(dt)
+
+end
+
+function portalparticle:draw()
+    love.graphics.setScreen(self.screen)
+
+    love.graphics.setColor(unpack(self.color))
+    love.graphics.rectangle("fill", self.x, self.y, 2, 2)
+
+    love.graphics.setColor(255, 255, 255)
 end

@@ -26,21 +26,10 @@ function tiled:loadMap(path)
     self.tiles = {}
     self.objects = {}
     self.music = {["top"] = "", ["bottom"] = ""}
+    self.backgrounds = {["top"] = nil, ["bottom"] = nil}
 
     self:loadData("top")
     self:loadData("bottom")
-
-
-    self.topScreen = {} 
-    
-    local count = 1
-    
-    while (love.filesystem.isFile("maps/smb/top/1-1_" .. count .. ".png")) do
-        self.topScreen[count] = love.graphics.newImage("maps/smb/top/1-1_" .. count .. ".png")
-        count = count + 1
-    end
-    
-    self.bottomScreen = love.graphics.newImage("maps/smb/bottom/1-1_1.png")
 end
 
 function tiled:loadData(screen)
@@ -56,6 +45,10 @@ function tiled:loadData(screen)
                 backgroundColori[screen] = self.map.layers[k].properties.background or 1
 
                 self.music[screen] = self.map.layers[k].properties.music
+
+                if self.map.layers[k].properties.image then
+                    self.backgrounds[screen] = love.graphics.newImage("maps/smb/backgrounds/" .. self.map.layers[k].properties.image .. ".png")
+                end
             end
         elseif v.type == "objectgroup" then
             if v.name == screen .. "Objects" then
@@ -71,7 +64,7 @@ function tiled:loadData(screen)
 
             if r > 0 then
                 local properties = {}
-                if not tileProperties[r] or tileProperties[r].breakable or tileProperties[r].visible then
+                if not tileProperties[r] or tileProperties[r].breakable or tileProperties[r].passive then
                     table.insert(self.tiles, tile:new((x - 1) * 16, (y - 1) * 16, r, tileProperties[r], screen))
                 end   
             end
@@ -86,43 +79,8 @@ function tiled:loadData(screen)
     end
 end
 
-function tiled:render()
-    love.graphics.setScreen("top")
-
-    if objects["mario"][1].screen == "top" then
-        love.graphics.setColor(unpack(backgroundColors[backgroundColori["top"]]))
-        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-
-        love.graphics.setColor(255, 255, 255)
-
-        for x = 1, #self.topScreen do
-            local t = {screen = "top", i = x, x = (x - 1) * 400, width = 400}
-            pushPop(t, true)
-
-            if inCamera(t) then
-                love.graphics.draw(self.topScreen[x], 0 + (x - 1) * 400, 0)
-            end
-
-            pushPop(t)
-        end
-    end
-
-    love.graphics.push()
-    
-    if objects["mario"][1].screen == "bottom" then
-        love.graphics.setColor(unpack(backgroundColors[backgroundColori["bottom"]]))
-        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-
-        love.graphics.setColor(255, 255, 255)
-
-        local t = {screen = "bottom", x = 0, width = 400, i = 1}
-        love.graphics.setScreen("bottom")
-        if inCamera(t) then
-            love.graphics.draw(self.bottomScreen, 0, 0)
-        end
-    end
-    
-    love.graphics.pop()
+function tiled:getBackground(screen)
+    return self.backgrounds[screen]
 end
 
 function tiled:changeSong(screen)
@@ -130,7 +88,6 @@ function tiled:changeSong(screen)
     if screen == "top" then
         otherScreen = "bottom"
     end
-    print(self.music[otherScreen], self.music[screen])
     _G[self.music[otherScreen] .. "Song"]:stop()
     playSound(_G[self.music[screen] .. "Song"])
 end

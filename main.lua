@@ -4,8 +4,6 @@ class = require 'libraries.middleclass'
 require 'libraries.physics'
 require 'classes.joystick'
 
-require 'libraries.spritebatch'
-
 require 'classes.tile'
 require 'classes.mario'
 require 'classes.coinblock'
@@ -44,7 +42,7 @@ function love.load()
 
     marioImage = love.graphics.newImage("graphics/player/nogunanimationsNEW.png")
     marioQuads = {}
-    for y = 1, 2 do
+    for y = 1, 4 do
         marioQuads[y] = {}
         for x = 1, 11 do
             marioQuads[y][x] = love.graphics.newQuad((x - 1) * 16, (y - 1) * 16, 16, 16, marioImage:getWidth(), marioImage:getHeight())
@@ -53,7 +51,7 @@ function love.load()
 
     marioGunImage = love.graphics.newImage("graphics/player/animations.png")
     marioGunQuads = {}
-    for y = 1, 8 do
+    for y = 1, 4 do
         marioGunQuads[y] = {}
         for x = 1, 11 do
             marioGunQuads[y][x] = love.graphics.newQuad((x - 1) * 17, (y - 1) * 17, 17, 17, marioGunImage:getWidth(), marioGunImage:getHeight())
@@ -61,6 +59,7 @@ function love.load()
     end
 
     marioBigImage = love.graphics.newImage("graphics/player/nogunbiganimations.png")
+    marioBigGunImage = love.graphics.newImage("graphics/player/biganimations.png")
     marioBigQuads = {}
     for y = 1, 4 do
         marioBigQuads[y] = {}
@@ -189,18 +188,18 @@ function love.load()
 	scale = 1
 
     --GAME STUFF BELOW--
-    myBatch = {["top"] = newSpriteBatch(superMarioTiles, superMarioTileQuads, "top"), ["bottom"] = newSpriteBatch(superMarioTiles, superMarioTileQuads, "bottom")}
-
-    tiled:loadMap("maps/smb/1-1_fix")
+    tiled:loadMap("maps/smb/1-1")
 
     objects = {}
     objects["tile"] = tiled:getTiles()
     objects["mario"] = tiled:getObjects("mario")
+
     objects["barrier"] =
     {
         barrier:new(0, 0, 1, 240, "top"),
         barrier:new(tiled:getWidth("top") * 16, 0, 1, 240, "top")
     }
+    
     objects["coin"] = tiled:getObjects("coin")
     objects["goomba"] = tiled:getObjects("goomba")
     objects["koopagreen"] = tiled:getObjects("koopagreen") or {}
@@ -209,8 +208,6 @@ function love.load()
     objects["powerup"] = {}
     objects["portal"] = {}
     objects["portalshot"] = {}
-
-    table.insert(objects["koopagreen"], koopagreen:new(128, 0, {}, "top"))
 
     player = objects["mario"][1]
 
@@ -228,8 +225,6 @@ function love.load()
     if not love.math then
         love.math = {random = math.random}
     end
-
-    --love.audio.setVolume(0)
 end
 
 function fontPrint(text, x, y)
@@ -303,29 +298,6 @@ function cameraScroll()
 	end
 end
 
-function pushPop(self, start)
-    local crurentScreen, otherScreen = "top", "top"
-    if player then
-        if player.screen == "top" then
-            otherScreen = "bottom"
-        end
-    end
-
-    if start then
-        if self.screen == player.screen then
-            love.graphics.push()
-
-            love.graphics.translate(-getScrollValue(), 0)
-        else
-            love.graphics.push()
-
-            love.graphics.translate(-math.floor(scrollValues[otherScreen][1]), 0)
-        end
-    else
-        love.graphics.pop()
-    end
-end
-
 function getScrollValue()
     return math.floor(scrollValues[player.screen][1])
 end
@@ -379,9 +351,9 @@ function checkForRemovals()
 end
 
 function love.update(dt)
-    dt = math.min(1/60, dt)
+    dt = math.min(0.1666667, dt)
 
-    cameraObjects = checkrectangle(getScrollValue(), 0, 400, 248, {"exclude", player}, nil, true)
+    cameraObjects = checkrectangle(getScrollValue(), 0, 400, 248, {"exclude", nil}, nil, true)
 
     checkForRemovals()
 
@@ -397,8 +369,6 @@ function love.update(dt)
         end
     end
 
-    player:update(dt)
-
     for k, v in ipairs(scoreTexts) do
         if v.remove then
             table.remove(scoreTexts, k)
@@ -407,7 +377,7 @@ function love.update(dt)
         v:update(dt)
     end
 
-    coinCounterTimer = coinCounterTimer + 2.5 * dt
+    coinCounterTimer = coinCounterTimer + 3.5 * dt
     coinCounterQuadi = math.floor(coinCounterTimer % 4) + 1
 
     cameraScroll()
@@ -418,31 +388,48 @@ function love.update(dt)
 end
 
 function love.draw()
-    tiled:render()
-    
-    love.graphics.setColor(255, 255, 255)
-    
-    love.graphics.setScreen("top")
+    love.graphics.setScreen(player.screen)
+    love.graphics.setColor(unpack(backgroundColors[backgroundColori[player.screen]]))
+    love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+
     fontPrint(tostring(love.timer.getFPS()), 1, 2)
 
-    local player
-    if objects["mario"][1] then
-        player = objects["mario"][1]
-    end
+    love.graphics.push()
+            
+    love.graphics.translate(-getScrollValue(), 0)
+
+    --[[if tiled:getBackground(player.screen) then
+        for x = 1, math.ceil(tiled:getWidth(player.screen) / 25) do
+            local t = {screen = player.screen, x = 0 + (x - 1) * tiled:getBackground(player.screen):getWidth(), width = 400, i = 1}
+
+            love.graphics.draw(tiled:getBackground(player.screen), 0 + (x - 1) * tiled:getBackground(player.screen):getWidth(), 8)
+        end
+    end]]
     
-    player:draw()
+    love.graphics.setColor(255, 255, 255)
 
     for i = 1, #cameraObjects do
+        
         if cameraObjects[i][2].screen == player.screen then
+
             if cameraObjects[i][2].draw then
-                cameraObjects[i][2]:draw()
+
+                if cameraObjects[i][2].zOrder == 1 then
+                    cameraObjects[i][2]:draw()
+                else
+                    cameraObjects[i][2]:draw()
+                end
             end
+            
         end
+        
     end
 
     for k, v in ipairs(scoreTexts) do
         v:draw()
     end
+
+    love.graphics.pop()
 
     love.graphics.setScreen(objects["mario"][1].screen)
     love.graphics.setColor(255, 255, 255)
@@ -453,11 +440,7 @@ function love.draw()
 
     fontPrint("world| 1-1", love.graphics.getWidth() * 0.57, 16)
 
-    fontPrint("time|inf", love.graphics.getWidth() * 0.8, 16)
-
-    if printKey then
-        fontPrint("pressed: " .. printKey, 0, 48)
-    end
+    fontPrint("time|" .. leveltime, love.graphics.getWidth() * 0.8, 16)
 
     gamepad:draw()
 end
@@ -501,8 +484,14 @@ function love.keyreleased(key)
 end
 
 function love.mousepressed(x, y, button)
-    if button == 1 then
+    if button == "l" then
         gamepad:setPosition(x, y)
+    end
+end
+
+function love.mousereleased(x, y, button)
+    if button == "l" then
+        gamepad:release()
     end
 end
 

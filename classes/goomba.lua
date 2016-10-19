@@ -42,8 +42,6 @@ function goomba:update(dt)
 end
 
 function goomba:draw()
-    pushPop(self, true)
-
     love.graphics.setScreen(self.screen)
 
     if self.scissor then
@@ -55,8 +53,6 @@ function goomba:draw()
     if self.scissor then
         love.graphics.setScissor()
     end
-
-    pushPop(self)
 end
 
 function goomba:shotted(dir)

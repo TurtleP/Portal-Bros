@@ -43,16 +43,7 @@ function coinanimation:update(dt)
 end
 
 function coinanimation:draw()
-    pushPop(self, true)
-
     love.graphics.setScreen(self.screen)
 
-    if self.endAnimation then
-        pushPop(self)
-        return
-    end
-
     love.graphics.draw(coinBlockCoinAnimationImage, coinBlockCoinAnimationQuads[self.quadi], self.x, self.y)
-
-    pushPop(self)
 end

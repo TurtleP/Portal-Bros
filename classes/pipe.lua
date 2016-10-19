@@ -19,10 +19,15 @@ function pipe:init(x, y, properties, screen)
     self.properties = properties or 16
 
     self.isSpawn = self.properties.spawn
+    self.r = tonumber(self.properties.r)
 
     if self.isSpawn then
-        self.draw = function() end
         self.passive = true
+    else
+        self.draw = function(self)
+            love.graphics.setScreen(self.screen)
+            love.graphics.draw(superMarioTiles, superMarioTileQuads[self.r], self.x, self.y)
+        end
     end
 
     self.direction = properties.direction
@@ -31,16 +36,8 @@ function pipe:init(x, y, properties, screen)
         self.link = self.properties.link:split(";")
     end
 
+    self.zOrder = 1
     self.screen = screen
-end
-
-function pipe:draw()
-    pushPop(self, true)
-
-    love.graphics.setScreen(self.screen)
-    love.graphics.draw(superMarioTiles, superMarioTileQuads[self.properties.r], self.x, self.y)
-
-    pushPop(self)
 end
 
 function pipe:getLink()

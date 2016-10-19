@@ -40,13 +40,9 @@ function portalshot:init(x, y, i, angle, screen)
 end
 
 function portalshot:draw()
-    pushPop(self, true)
-
     love.graphics.setColor(unpack(self.color))
     love.graphics.circle("fill", self.x, self.y, self.width)
     love.graphics.setColor(255, 255, 255)
-    
-    pushPop(self)
 end
 
 function portalshot:downCollide(name, data)

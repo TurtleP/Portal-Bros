@@ -24,9 +24,5 @@ function scoretext:update(dt)
 end
 
 function scoretext:draw()
-    pushPop(self, true)
-
     smallPrint(self.text, self.x, self.y)
-
-    pushPop(self)
 end

@@ -62,7 +62,9 @@ function mario:init(x, y, properties, screen, size, lives)
             {-4, -4, 9},
         },
         {
-            {-3, 14, 4}
+            {-3, 14, 4},
+            {-3, 14, 7},
+            {-3, 14, 7}
         }
     }
 
@@ -83,8 +85,8 @@ function mario:init(x, y, properties, screen, size, lives)
     elseif self.size > 1 then
         if not self.portalGun then
             self.graphic = marioBigImage
-            self.quads = marioBigQuads
         end
+        self.quads = marioBigQuads
         self.height = 24
     end
 
@@ -103,11 +105,20 @@ function mario:update(dt)
         if self.growing then
             self.growTimer = self.growTimer + 12 * dt
             if math.floor(self.growTimer) % 2 == 0 then
-                self.graphic = marioBigImage
+                if not self.portalGun then
+                    self.graphic = marioBigImage
+                else
+                    self.graphic = marioBigGunImage
+                end
                 self.quads = marioBigQuads
             else
-                self.graphic = marioImage
-                self.quads = marioQuads
+                if not self.portalGun then
+                    self.graphic = marioImage
+                    self.quads = marioQuads
+                else
+                    self.graphic = marioGunImage
+                    self.quads = marioGunQuads
+                end
                 self.height = 24
             end
 
@@ -118,6 +129,7 @@ function mario:update(dt)
         end
         return
     end
+
     if self.rightKey then
         self.speedx = math.min(self.speedx + self.walkSpeed, self.maxWalkSpeed)
     elseif self.leftKey then
@@ -157,7 +169,7 @@ function mario:update(dt)
             self.scale = -scale
         end
 
-        self.timer = self.timer + math.abs(self.speedx) * 0.15 * dt 
+        self.timer = self.timer + math.abs(self.speedx) * 0.1 * dt 
         self.quadi = self.animations["walk"][math.floor(self.timer % #self.animations["walk"]) + 1]
     elseif self.speedx == 0 and not self.jumping then
         self.quadi = 1
@@ -175,6 +187,13 @@ function mario:update(dt)
     else
         self:setPointingAngle(0)
     end
+
+    --[[if self.downKey then
+        if self.size > 1 then
+            self.timer = 0
+            self.quadi = 12
+        end
+    end]]
 
     if self.pipe then
         self:doPipe(dt)
@@ -327,8 +346,6 @@ function mario:stopJump()
 end
 
 function mario:draw()
-    pushPop(self, true)
-    
     love.graphics.setScreen(self.screen)
     
     if self.scissor and #self.scissor > 0 then
@@ -354,8 +371,6 @@ function mario:draw()
     love.graphics.setColor(255, 0, 0)
     love.graphics.rectangle("fill", self.x + self.width / 2 + math.cos(self.pointingAngle) * 30, self.y + self.height / 2 + math.sin(self.pointingAngle) * 30, 2, 2)
     love.graphics.setColor(255, 255, 255)
-
-    pushPop(self)
 end
 
 function mario:getPointingQuad()
@@ -407,6 +422,11 @@ function mario:upCollide(name, data)
         end
     end
 
+    if name == "powerup" then
+        data:collect(self)
+        return false
+    end
+
     if name == "goomba" then
         self:shrink()
         return false
@@ -429,6 +449,11 @@ function mario:downCollide(name, data)
 
     if name == "portal" then
         return enterPortal(self, "down", data)
+    end
+
+    if name == "powerup" then
+        data:collect(self)
+        return false
     end
 
     if name == "goomba" then
@@ -497,6 +522,7 @@ function mario:leftCollide(name, data)
 
     if name == "powerup" then
         data:collect(self)
+        return false
     end
 
     if name == "coinblock" then
@@ -531,6 +557,7 @@ function mario:rightCollide(name, data)
 
     if name == "powerup" then
         data:collect(self)
+        return false
     end
 
     if name == "pipe" then

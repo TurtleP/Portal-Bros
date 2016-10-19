@@ -16,8 +16,11 @@ function mushroom:init(x, y, screen)
     {
         "tile",
         "mario",
-        "coinblock"
+        "coinblock",
+        "portal"
     }
+
+    self.zOrder = 1
 
     self.initial = false
     self.active = true
@@ -27,6 +30,8 @@ function mushroom:init(x, y, screen)
     self.timer = 0
 
     self.screen = screen
+
+    self.portalable = true
 
     self.deSpawn = 0.5
 end
@@ -56,12 +61,8 @@ function mushroom:update(dt)
 end
 
 function mushroom:draw()
-    pushPop(self, true)
-
     love.graphics.setScreen(self.screen)
     love.graphics.draw(powerupImage, powerupQuads[self.quadi], self.x, self.y)
-
-    pushPop(self)
 end
 
 function mushroom:collect(player)
@@ -69,26 +70,41 @@ function mushroom:collect(player)
     
     playSound(growSound)
 
-    self.remove = true
-
     player:grow()
+
+    self.remove = true
 end
 
 function mushroom:upCollide(name, data)
+    if name == "portal" then
+        return enterPortal(self, "up", data)
+    end
+
     if name == "mario" then
         self:collect(data)
+        return false
     end
 end
 
 function mushroom:downCollide(name, data)
+    if name == "portal" then
+        return enterPortal(self, "down", data)
+    end
+
     if name == "mario" then
         self:collect(data)
+        return false
     end
 end
 
 function mushroom:leftCollide(name, data)
+    if name == "portal" then
+        return enterPortal(self, "left", data)
+    end
+
     if name == "mario" then
         self:collect(data)
+        return false
     end
 
     if name == "tile" then
@@ -98,8 +114,13 @@ function mushroom:leftCollide(name, data)
 end
 
 function mushroom:rightCollide(name, data)
+    if name == "portal" then
+        return enterPortal(self, "right", data)
+    end
+
     if name == "mario" then
         self:collect(data)
+        return false
     end
 
     if name == "tile" then

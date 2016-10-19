@@ -39,8 +39,6 @@ function koopagreen:update(dt)
 end
 
 function koopagreen:draw()
-    pushPop(self, true)
-
     love.graphics.setScreen(self.screen)
 
     if self.scissor then
@@ -52,8 +50,6 @@ function koopagreen:draw()
     if self.scissor then
         love.graphics.setScissor()
     end
-
-    pushPop(self)
 end
 
 function koopagreen:stomp()

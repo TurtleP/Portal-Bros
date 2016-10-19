@@ -7,7 +7,7 @@ function barrier:init(x, y, width, height, screen)
     self.width = width
     self.height = height
 
-    self.active = true
+    self.active = false
     self.static = true
 
     self.speedx = 0

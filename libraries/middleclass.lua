@@ -45,7 +45,7 @@ end
 
 local function _setClassMetatable(aClass)
   setmetatable(aClass, {
-	__tostring = function() return "class " .. aClass.name end,
+	__tostring = function() return aClass.name end,
 	__index	= aClass.static,
 	__newindex = aClass.__instanceDict,
 	__call	 = function(self, ...) return self:new(...) end

@@ -13,6 +13,8 @@ function tile:init(x, y, i, flags, screen)
     self.speedx = 0
     self.speedy  = 0
 
+    self.category = 1
+    
     self.i = i
 
     if flags then
@@ -20,6 +22,8 @@ function tile:init(x, y, i, flags, screen)
             self[k] = v
         end
     end
+    
+    self.zOrder = 1
 
     self.screen = screen
 
@@ -27,15 +31,7 @@ function tile:init(x, y, i, flags, screen)
     self.hitTimer = 0
 
     if self.breakable then
-        self.draw = function(self)
-            pushPop(self, true)
-
-            love.graphics.setScreen(self.screen)
-
-            love.graphics.draw(superMarioTiles, superMarioTileQuads[self.i], self.x, self.y - self.hitTimer)
-
-            pushPop(self)
-        end
+        self.active = true
 
         self.update = function(self, dt)
             if self.hit then
@@ -47,6 +43,12 @@ function tile:init(x, y, i, flags, screen)
                 self.hitTimer = math.max(self.hitTimer - 32 * dt, 0)
             end
         end
+    end
+
+    self.draw = function(self)
+        love.graphics.setScreen(self.screen)
+
+        love.graphics.draw(superMarioTiles, superMarioTileQuads[self.i], self.x, self.y - self.hitTimer)
     end
 end
 

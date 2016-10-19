@@ -6,51 +6,65 @@
 	v1.2
 --]]
 
+local floor = math.floor
+local dist = util.dist
+local ceil = math.ceil
+local round = util.round
+
+--[[
+
+	CATEGORIES:
+
+	1. TILE
+	2. PLAYER
+	3. COINBLOCK
+	4. ENEMY
+	5. PORTAL
+	6. ???
+
+--]]
+
 local objectNames =
 {
 	"mario",
 	"goomba",
-	"koopagreen",
 	"portalshot",
+	"koopagreen",
 	"powerup"
 }
 
-local floor = math.floor
-local dist = util.dist
-
 function physicsupdate(dt)
-	for objectNameIndex = 1, #objectNames do
-		for objectIndex = 1, #objects[objectNames[objectNameIndex]] do
-			local objData = objects[objectNames[objectNameIndex]][objectIndex]
+	for cameraIndex = 1, #cameraObjects do
+		local objData = cameraObjects[cameraIndex][2]
 
-			if objData.active and not objData.static then
-				local hor, ver = false, false 
+		if objData.active and not objData.static then
+			local hor, ver = false, false
 
-				if inCamera(objData) then
-					objData.speedy = math.min(objData.speedy + objData.gravity * dt, 15 * 16) --add gravity to objects
+			objData.speedy = math.min(objData.speedy + objData.gravity * dt, 15 * 16) --add gravity to objects
 
-					if objData.mask then
-						for maskIndex = 1, #objData.mask do
-							for maskObjectIndex = 1, #objects[objData.mask[maskIndex]] do
-								local obj2Data = objects[objData.mask[maskIndex]][maskObjectIndex]
+			if objData.mask then
+				for maskIndex, mask in ipairs(objData.mask) do
 
-								if objData ~= obj2Data then
-									if objData.screen == obj2Data.screen then
-										hor, ver = checkCollision(objData, objectNames[objectNameIndex], obj2Data, objData.mask[maskIndex], dt)
-									end
+					for i = 1, #cameraObjects do
+						if cameraObjects[i][2].screen == player.screen then
+							if mask == cameraObjects[i][1] then
+								local obj2Data = cameraObjects[i][2]
+										
+								if aabb(objData.x + objData.speedx * dt, objData.y + objData.speedy * dt, objData.width, objData.height, obj2Data.x, obj2Data.y, obj2Data.width, obj2Data.height) then
+									hor, ver = checkCollision(objData, cameraObjects[cameraIndex][1], obj2Data, mask, dt)
 								end
 							end
 						end
 					end
-						
-					if hor == false then
-						objData.x = objData.x + objData.speedx * dt
-					end
-
-					if ver == false then
-						objData.y = objData.y + objData.speedy
-					end
 				end
+			end
+
+			if hor == false then
+				objData.x = objData.x + objData.speedx * dt
+			end
+
+			if ver == false then
+				objData.y = objData.y + objData.speedy
 			end
 		end
 	end
@@ -66,12 +80,6 @@ end
 
 function checkCollision(objData, objName, obj2Data, obj2Name, dt)
 	local hor, ver = false, false
-
-	if not objData.static and not obj2Data.static then
-		if floor(dist(objData.x + objData.speedx * dt, objData.y + objData.speedy * dt, obj2Data.x + obj2Data.speedx * dt, obj2Data.y + obj2Data.speedy * dt)) > 17 then
-			return hor, ver
-		end
-	end
 
 	if not objData.passive then
 		if not obj2Data.passive then

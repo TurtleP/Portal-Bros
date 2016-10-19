@@ -40,7 +40,6 @@ function joystick:update(dt)
         self:stickDown(self.isDown("cstickdown"))
         self:stickLeft(self.isDown("cstickleft"))
     else
-        self.held = love.mouse.isDown(1)
         if self.held then
             self.dx = util.clamp(love.mouse.getX() - self.x, -self.r, self.r)
             self.dy = util.clamp(love.mouse.getY() - self.y, -self.r, self.r)
@@ -49,8 +48,15 @@ function joystick:update(dt)
 end
 
 function joystick:setPosition(x, y)
-    self.x = x
-    self.y = y
+    if not love.system.getModel():find("n3ds") then
+        self.x = x
+        self.y = y
+        self.held = true
+    end
+end
+
+function joystick:release()
+    self.held = false
 end
 
 function joystick:isMoved()

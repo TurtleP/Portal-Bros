@@ -24,17 +24,14 @@ function coin:update(dt)
 end
 
 function coin:draw()
-    pushPop(self, true)
-
     love.graphics.setScreen(self.screen)
 
     love.graphics.draw(coinImage, coinQuads[1][self.quadi], self.x, self.y)
-
-    pushPop(self)
 end
 
 function coin:collect()
     playSound(coinSound)
     self.remove = true
     addScore(100)
+    coinCount = coinCount + 1
 end
