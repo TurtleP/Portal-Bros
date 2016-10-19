@@ -120,6 +120,7 @@ function portal:update(dt)
         for i = 1, #check do
             if check[i][2].portaled then
                 if self.dir == 1 then --exit upward
+                        --check[i][2].speedy = math.min(check[i][2].speedy, 12) --check speed
                     if check[i][2].y + check[i][2].height / 2 < self.y then
                         --check[i][2].speedy = math.max(check[i][2].speedy, -12) --check speed
                         
@@ -128,7 +129,6 @@ function portal:update(dt)
                     end
                 elseif self.dir == 2 then --exit downward
                     if check[i][2].y > self.y + self.height then
-                        check[i][2].speedy = math.min(check[i][2].speedy, 12) --check speed
 
                         check[i][2].scissor = {}
                         check[i][2].portaled = false
@@ -208,7 +208,9 @@ function portal:moveObject(t, other)
         t.speedy = 0
     end
 
-    playSound(portalEnterSound)
+    if tostring(t) == "mario" then
+        playSound(portalEnterSound)
+    end
 end
 
 function portal:getOther(t)

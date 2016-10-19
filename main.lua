@@ -22,6 +22,8 @@ require 'classes.portalshot'
 require 'classes.scoretext'
 require 'classes.barrier'
 
+require 'variables'
+
 io.stdout:setvbuf("no")
 function love.load()
     backgroundColors =
@@ -353,21 +355,10 @@ end
 function love.update(dt)
     dt = math.min(0.1666667, dt)
 
-    cameraObjects = checkrectangle(getScrollValue(), 0, 400, 248, {"exclude", nil}, nil, true)
-
+    cameraObjects = checkCamera(getScrollValue(), 0, 400, 248)
+    cameraOtherObjects = checkCamera(getScrollValue(), 0, 432, 248)
+    
     checkForRemovals()
-
-    for i = 1, #cameraObjects do
-        if cameraObjects[i][2].screen == player.screen then
-            if cameraObjects[i][2].update then
-                cameraObjects[i][2]:update(dt)
-            end
-
-            if cameraObjects[i][2].y > love.graphics.getHeight() then
-                cameraObjects[i][2].remove = true
-            end
-        end
-    end
 
     for k, v in ipairs(scoreTexts) do
         if v.remove then
@@ -398,13 +389,11 @@ function love.draw()
             
     love.graphics.translate(-getScrollValue(), 0)
 
-    --[[if tiled:getBackground(player.screen) then
+    if tiled:getBackground(player.screen) then
         for x = 1, math.ceil(tiled:getWidth(player.screen) / 25) do
-            local t = {screen = player.screen, x = 0 + (x - 1) * tiled:getBackground(player.screen):getWidth(), width = 400, i = 1}
-
             love.graphics.draw(tiled:getBackground(player.screen), 0 + (x - 1) * tiled:getBackground(player.screen):getWidth(), 8)
         end
-    end]]
+    end
     
     love.graphics.setColor(255, 255, 255)
 

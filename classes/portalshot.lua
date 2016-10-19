@@ -12,7 +12,7 @@ function portalshot:init(x, y, i, angle, screen)
     self.angle = angle
 
     self.speedx = math.cos(angle) * 240
-    self.speedy = math.sin(angle) * 6
+    self.speedy = math.sin(angle) * 360
 
     playSound(portalShotSound[i])
 

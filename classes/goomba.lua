@@ -1,7 +1,13 @@
 goomba = class("goomba")
 
 function goomba:init(x, y, properties, screen)
-    self.x = x
+
+    local add = tonumber(properties.offset)
+    if not add then
+        add = 0
+    end
+
+    self.x = x + add
     self.y = y
 
     self.width = 16
@@ -10,7 +16,8 @@ function goomba:init(x, y, properties, screen)
     self.mask =
     {
         "portal",
-        "tile"
+        "tile",
+        "koopagreen"
     }
 
     self.portalable = true
@@ -19,7 +26,7 @@ function goomba:init(x, y, properties, screen)
     self.speedy = 0
 
     self.active = true
-    self.gravity = 8
+    self.gravity = 840
 
     self.dead = false
     
@@ -77,11 +84,19 @@ function goomba:upCollide(name, data)
     if name == "portal" then
         return enterPortal(self, "up", data)
     end
+
+    if name == "koopagreen" then
+        return false
+    end
 end
 
 function goomba:downCollide(name, data)
     if name == "portal" then
         return enterPortal(self, "down", data)
+    end
+
+    if name == "koopagreen" then
+        return false
     end
 end
 
@@ -94,6 +109,13 @@ function goomba:leftCollide(name, data)
     if name == "portal" then
         return enterPortal(self, "left", data)
     end
+
+    if name == "koopagreen" then
+        if data.slide then
+            self:shotted("right")
+            return false
+        end
+    end
 end
 
 function goomba:rightCollide(name, data)
@@ -104,5 +126,12 @@ function goomba:rightCollide(name, data)
 
     if name == "portal" then
         return enterPortal(self, "right", data)
+    end
+
+    if name == "koopagreen" then
+        if data.slide then
+            self:shotted("left")
+            return false
+        end
     end
 end

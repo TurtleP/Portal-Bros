@@ -32,7 +32,7 @@ function mario:init(x, y, properties, screen, size, lives)
     self.speedx = 0
     self.speedy = 0
 
-    self.gravity = 14
+    self.gravity = 840
 
     self.rightKey = false
     self.leftKey = false
@@ -91,9 +91,6 @@ function mario:init(x, y, properties, screen, size, lives)
     end
 
     self.pointingAngle = 0
-
-    self.pointingX = 400
-    self.pointingY = 0
 
     self.shotTimer = 0
 
@@ -228,10 +225,10 @@ end
 function mario:doPipe(dt)
     if self.active then
         if self.pipeDirection == "down" then
+            self.speedx = 0
             if self.y < self.pipe.y + 3 then
-                self.speedy = 0.5
+                self.y = self.y + 32 * dt
             else
-                self.active = false
                 self.scale = scale
             end
         elseif self.pipeDirection == "right" then
@@ -240,14 +237,12 @@ function mario:doPipe(dt)
             else
                 self.scale = scale
             end
-            self.speedx = 0.5
-            self.static = true
         elseif self.pipeDirection == "up" then
+            self.speedx = 0
             if self.y > self.pipe:getLink()[3] - self.height then
                 self.y = self.y - 32 * dt
             else
                 self.static = false
-                self.passive = false
                 self.scissor = nil
                 self.pipeDirection = ""
                 self.pipe = nil
@@ -265,27 +260,27 @@ function mario:transferPipe(screen, x, y, isSpawn)
     self.y = y
 
     if util.toBoolean(isSpawn) then
-        --table.insert(self.mask, "pipe")
-        self.active = true
         self.scissor = nil
         self.pipe = nil
         self.passive = false
+        self.static = false
     else
         self.pipeDirection = "up"
-        self.static = true
         self.scissor = {x - getScrollValue(), y - self.height, 20, 16}
     end
 end
 
 function mario:setPipe(pipe, direction)
-    self.pipe = pipe
+    if not self.passive then
+        self.pipe = pipe
 
-    self.passive = true
-    
-    self.scissor = {self.x - getScrollValue(), self.y, 20, self.height}
+        self.static = true
+        
+        self.scissor = {self.x - getScrollValue(), self.y, 20, self.height}
 
-    self.pipeDirection = direction
-    playSound(shrinkSound)
+        self.pipeDirection = direction
+        playSound(shrinkSound)
+    end
 end
 
 function mario:moveRight(move)
@@ -322,12 +317,7 @@ end
 
 function mario:jump()
     if self.speedy == 0 then
-        self.speedy = -5
-        if self.runKey and not self.skidding then
-            self.speedy = -6
-        elseif self.skidding then
-            self.speedy = -4
-        end
+        self.speedy = -jumpForce - (math.abs(self.speedx) / self.maxWalkSpeed) * jumpForceAdd
 
         if self.size == 1 then
             playSound(jumpSound)
@@ -341,7 +331,7 @@ end
 
 function mario:stopJump()
     if self.speedy < 0 then
-        self.speedy = self.speedy + 1 
+        self.speedy = self.speedy * 0.05
     end
 end
 
@@ -458,7 +448,7 @@ function mario:downCollide(name, data)
 
     if name == "goomba" then
         if not self.jumping then
-            self.speedy = -3
+            self.speedy = -180
             data:stomp()
             self.jumping = true
             return true
@@ -469,7 +459,7 @@ function mario:downCollide(name, data)
         if not self.jumping then
             if not data.stomped then
                 data:stomp()
-                self.speedy = -3
+                self.speedy = -180
                 self.jumping = true
             else
                 if self.x + self.width / 2 < data.x + data.width / 2 then
@@ -477,7 +467,7 @@ function mario:downCollide(name, data)
                 else
                     data:kick("left")
                 end
-                self.speedy = -3
+                self.speedy = -180
                 self.jumping = true
             end
             return true
@@ -544,7 +534,7 @@ function mario:rightCollide(name, data)
 
     if name == "koopagreen" then
         if data.stomped then
-            if data.slide then
+            if data.slide and data.speedx < 0 then
                 self:shrink()
             else
                 data:kick("right")
@@ -594,7 +584,7 @@ function mario:die(isPit)
     self.quadi = 7
 
     if not isPit then
-        self.speedy = -5
+        self.speedy = -300
     end
     
     self.speedx = 0

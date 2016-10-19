@@ -2,7 +2,7 @@ koopagreen = class("koopagreen")
 
 function koopagreen:init(x, y, properties, screen)
     self.x = x
-    self.y = y
+    self.y = y - 8
 
     self.width = 16
     self.height = 24
@@ -20,7 +20,7 @@ function koopagreen:init(x, y, properties, screen)
     self.speedy = 0
 
     self.active = true
-    self.gravity = 8
+    self.gravity = 840
 
     self.stomped = false
     self.slide = false
@@ -69,9 +69,9 @@ function koopagreen:kick(dir)
     self.slide = true
 
     if dir == "right" then
-        self.speedx = 200
+        self.speedx = 180
     else
-        self.speedx = -200
+        self.speedx = -180
     end
 
     playSound(enemyShotSound)
@@ -83,12 +83,10 @@ function koopagreen:upCollide(name, data)
     end
 
     if name == "goomba" then
-        if self.speedx > 0 then 
+        if self.slide then
             data:shotted("right")
-        else
-            data:shotted("left")
+            return false
         end
-        return false
     end
 end
 
@@ -98,12 +96,10 @@ function koopagreen:downCollide(name, data)
     end
 
     if name == "goomba" then
-        if self.speedx > 0 then 
+        if self.slide then
             data:shotted("right")
-        else
-            data:shotted("left")
+            return false
         end
-        return false
     end
 end
 
@@ -115,8 +111,10 @@ function koopagreen:leftCollide(name, data)
     end
 
     if name == "goomba" then
-        data:shotted("left")
-        return false
+        if self.slide then
+            data:shotted("left")
+            return false
+        end
     end
 
     if name == "portal" then
@@ -132,8 +130,10 @@ function koopagreen:rightCollide(name, data)
     end
 
     if name == "goomba" then
-        data:shotted("right")
-        return false
+        if self.slide then
+            data:shotted("right")
+            return false
+        end
     end
 
     if name == "portal" then
