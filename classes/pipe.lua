@@ -21,6 +21,8 @@ function pipe:init(x, y, properties, screen)
     self.isSpawn = self.properties.spawn
     self.r = tonumber(self.properties.r)
 
+    self.category = 5
+    
     if self.isSpawn then
         self.passive = true
     else

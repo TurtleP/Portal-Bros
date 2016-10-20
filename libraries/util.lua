@@ -50,8 +50,6 @@ function util.changeState(toState, ...)
 	if _G[toState .. "Init"] then
 		state = toState
 		
-		util.clearFonts()
-		
 		_G[toState .. "Init"](unpack(arg))
 	end
 
@@ -109,59 +107,12 @@ function util.mouseMovedState(x, y, dx, dy)
 	end
 end
 
-function util.gamePadPressed(joystick, button)
-	if _G[state .. "GamePadPressed"] then
-		_G[state .. "GamePadPressed"](joystick, button)
-	end
-end
-
-function util.gamePadReleased(joystick, button)
-	if _G[state .. "GamePadReleased"] then
-		_G[state .. "GamePadReleased"](joystick, button)
-	end
-end
-
-function util.touchPressed(id, x, y, pressure)
-	if _G[state .. "TouchPressed"] then
-		_G[state .. "TouchPressed"](id, x, y, pressure)
-	end
-end
-
-function util.touchReleased(id, x, y, pressure)
-	if _G[state .. "TouchReleased"] then
-		_G[state .. "TouchReleased"](id, x, y, pressure)
-	end
-end
-
-function util.touchMoved(id, x, y, dx, dy, pressure)
-	if _G[state .. "TouchMoved"] then
-		_G[state .. "TouchMoved"](id, x, y, dx, dy, pressure)
-	end
-end
-
 function util.dist(x1,y1, x2,y2) 
 	return ((x2-x1)^2+(y2-y1)^2)^0.5 
 end
 
 function util.clamp(val, min, max)
 	return math.max(min, math.min(val, max))
-end
-
-function util.checkOrientation() --yep, mobile!
-
-end
-
-function util.colorFade(currenttime, maxtime, c1, c2) --Color function
-	local tp = currenttime/maxtime
-	local ret = {} --return color
-
-	for i = 1, #c1 do
-		ret[i] = c1[i]+(c2[i]-c1[i])*tp
-		ret[i] = math.max(ret[i], 0)
-		ret[i] = math.min(ret[i], 255)
-	end
-
-	return ret
 end
 
 function util.getWidth()
@@ -171,18 +122,5 @@ end
 function util.getHeight()
 	return love.graphics.getHeight()
 end
-
-Color =
-{
-	["red"] = {225, 73, 56},
-	["green"] = {65, 168, 95},
-	["blue"] = {44, 130, 201},
-	["yellow"] = {250, 197, 28},
-	["orange"] = {243, 121, 52},
-	["purple"] = {147, 101, 184},
-	["darkPurple"] = {85, 57, 130},
-	["black"] = {0, 0, 0},
-	["white"] = {255, 255, 255}
-}
 
 return util

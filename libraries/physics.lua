@@ -17,34 +17,35 @@ local abs = math.abs
 	1. TILE
 	2. PLAYER
 	3. COINBLOCK
-	4. ENEMY
-	5. PORTAL
-	6. ???
+	4. PORTAL
+	5. PIPE
+	6. GOOMBA
+	7. KOOPAGREEN
+	8. COIN
+	9. MUSHROOM
+	10. BARRIER
 
 --]]
 
 function physicsupdate(dt)
 	for cameraIndex = 1, #cameraObjects do
-		local objData = cameraObjects[cameraIndex][2]
-
+		local objName, objData, objIndex = cameraObjects[cameraIndex][1], cameraObjects[cameraIndex][2], cameraObjects[cameraIndex][3]
+		
 		if cameraObjects[cameraIndex][1] ~= "tile" then
 			if objData.active and not objData.static then
 				local hor, ver = false, false
 
 				objData.speedy = math.min(objData.speedy + objData.gravity * dt, 15 * 60) --add gravity to objects
 
-				if objData.mask then
-					for maskIndex, mask in ipairs(objData.mask) do
-
-						for i = 1, #cameraOtherObjects do
-							if cameraOtherObjects[i][1] == mask then
+				if objData.mask and not objData.passive then
+					for i = 1, #cameraOtherObjects do
+						if objData ~= cameraOtherObjects[i][2] then
+							if objData.mask[cameraOtherObjects[i][2].category] then
 								local obj2Data = cameraOtherObjects[i][2]
-								if aabb(objData.x + objData.speedx * dt, objData.y + objData.speedy * dt, objData.width, objData.height, obj2Data.x, obj2Data.y, obj2Data.width, obj2Data.height) then
-									hor, ver = checkCollision(objData, cameraObjects[cameraIndex][1], cameraOtherObjects[i][2], mask, dt)
-								end
+
+								hor, ver = checkCollision(objData, cameraObjects[cameraIndex][1], cameraOtherObjects[i][2], cameraOtherObjects[i][1], dt)
 							end
 						end
-
 					end
 				end
 
@@ -59,6 +60,10 @@ function physicsupdate(dt)
 		end
 
 		if objData.screen == player.screen then
+			if objData.remove then
+				table.remove(objects[objName], objIndex)
+			end
+
 			if objData.update then
 				objData:update(dt)
 			end
@@ -77,16 +82,16 @@ end
 function checkCollision(objData, objName, obj2Data, obj2Name, dt)
 	local hor, ver = false, false
 
-	if not objData.passive then
-		if not obj2Data.passive then
+	if not obj2Data.passive then
+		if aabb(objData.x + objData.speedx * dt, objData.y + objData.speedy * dt, objData.width, objData.height, obj2Data.x, obj2Data.y, obj2Data.width, obj2Data.height) then
 			if aabb(objData.x, objData.y + objData.speedy * dt, objData.width, objData.height, obj2Data.x, obj2Data.y, obj2Data.width, obj2Data.height) then --was vertical
 				ver = verticalCollide(objName, objData, obj2Name, obj2Data)
 			elseif aabb(objData.x + objData.speedx * dt, objData.y, objData.width, objData.height, obj2Data.x, obj2Data.y, obj2Data.width, obj2Data.height) then
 				hor = horizontalCollide(objName, objData, obj2Name, obj2Data)
 			end
-		else
-			checkPassive(objData, objName, obj2Data, obj2Name, dt)
 		end
+	else
+		checkPassive(objData, objName, obj2Data, obj2Name, dt)
 	end
 
 	return hor, ver
@@ -99,7 +104,7 @@ function checkCamera(x, y, width, height)
 		for j, w in ipairs(v) do
 			if w.active and w.screen == player.screen then
 				if aabb(x, y, width, height, w.x, w.y, w.width, w.height) then
-					table.insert(ret, {k, w})
+					table.insert(ret, {k, w, j})
 				end
 			end
 		end

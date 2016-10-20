@@ -2,23 +2,18 @@ mario = class("mario")
 
 function mario:init(x, y, properties, screen, size, lives)
     self.x = x
-    self.y = y
+    self.y = y + 4
 
     self.width = 12
 
     self.active = true
 
+    self.category = 2
     self.mask =
     {
-        "barrier",
-        "tile",
-        "goomba",
-        "koopagreen",
-        "coinblock",
-        "coin",
-        "pipe",
-        "portal",
-        "powerup"
+        true, false, true, true,
+        true, true, true, true,
+        true, true
     }
 
     self.animations =
@@ -90,6 +85,15 @@ function mario:init(x, y, properties, screen, size, lives)
         self.height = 24
     end
 
+    self.growthAnimation = 
+    {
+        ["false"] = {image = {marioImage, marioBigImage}, quad = {marioQuads, marioBigQuads}},
+        ["true"] = {image = {marioGunImage, marioBigGunImage}, quad = {marioGunQuads, marioBigQuads}}
+    }
+
+    self.invincible = false
+    self.drawable = true
+
     self.pointingAngle = 0
 
     self.shotTimer = 0
@@ -98,30 +102,35 @@ function mario:init(x, y, properties, screen, size, lives)
 end
 
 function mario:update(dt)
-    if self.dead or self.growing then
+    if self.dead or self.growing or self.invincible then
         if self.growing then
-            self.growTimer = self.growTimer + 12 * dt
-            if math.floor(self.growTimer) % 2 == 0 then
-                if not self.portalGun then
-                    self.graphic = marioBigImage
-                else
-                    self.graphic = marioBigGunImage
-                end
-                self.quads = marioBigQuads
-            else
-                if not self.portalGun then
-                    self.graphic = marioImage
-                    self.quads = marioQuads
-                else
-                    self.graphic = marioGunImage
-                    self.quads = marioGunQuads
-                end
-                self.height = 24
-            end
+            if not self.invincible then
+                self.growTimer = self.growTimer + 12 * dt
 
-            if self.growTimer > 12 then
-                self.growing = false
-                self.static = false
+                self.graphic = self.growthAnimation[tostring(self.portalGun)].image[math.floor(self.growTimer % 2) + 1]
+                self.quads = self.growthAnimation[tostring(self.portalGun)].quad[math.floor(self.growTimer % 2) + 1]
+
+                if self.growTimer > 13 then
+                    self.growing = false
+                    self.static = false
+                    self.growTimer = 0
+                end
+
+                self.height = 24
+            else
+                self.growTimer = self.growTimer - 12 * dt
+                self.graphic = self.growthAnimation[tostring(self.portalGun)].image[math.floor(self.growTimer % 2) + 1]
+                self.quads = self.growthAnimation[tostring(self.portalGun)].quad[math.floor(self.growTimer % 2) + 1]
+
+                if self.growTimer < -13 then
+                    self.growing = false
+                    self.invincible = false
+                    self.static = false
+                    self.growTimer = 0
+                    self.y = self.y + 12
+                end
+
+                self.height = 12
             end
         end
         return
@@ -338,6 +347,10 @@ end
 function mario:draw()
     love.graphics.setScreen(self.screen)
     
+    if not self.drawable then
+        return
+    end
+
     if self.scissor and #self.scissor > 0 then
         love.graphics.setScissor(self.scissor[1], self.scissor[2], self.scissor[3], self.scissor[4])
     end
@@ -451,7 +464,7 @@ function mario:downCollide(name, data)
             self.speedy = -180
             data:stomp()
             self.jumping = true
-            return true
+            return false
         end
     end
 
@@ -470,7 +483,7 @@ function mario:downCollide(name, data)
                 self.speedy = -180
                 self.jumping = true
             end
-            return true
+            return false
         end
     end
 
@@ -564,15 +577,32 @@ function mario:rightCollide(name, data)
 end
 
 function mario:shrink()
-    self.size = math.max(self.size - 1, 0)
-
-    if self.size == 0 then
-        self:die()
+    if self.invincible then
+        return
+    else
+        if self.size == 1 then
+            self:die()
+            return
+        end
     end
+
+    self.growing = true
+    self.invincible = true
+    self.static = true
+    
+    self.size = math.max(self.size - 1, 0)
 end
 
 function mario:grow()
+    if self.growing then
+        return
+    end
+
     self.size = math.min(self.size + 1, 3)
+
+    if self.size == 2 then
+        return
+    end
 
     self.growing = true
     self.static = true

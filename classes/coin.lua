@@ -7,6 +7,8 @@ function coin:init(x, y, properties, screen)
     self.width = 16
     self.height = 16
 
+    self.category = 8
+    
     self.timer = 0
     self.quadi = 1
 

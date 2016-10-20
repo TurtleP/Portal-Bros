@@ -13,11 +13,11 @@ function goomba:init(x, y, properties, screen)
     self.width = 16
     self.height = 16
 
+    self.category = 6
     self.mask =
     {
-        "portal",
-        "tile",
-        "koopagreen"
+        true, true, true, true, true, true,
+        true
     }
 
     self.portalable = true
@@ -68,7 +68,7 @@ function goomba:shotted(dir)
     else
         self.speedx = -80
     end
-    self.speedy = -2.5
+    self.speedy = -150
     self.passive = true
 
     playSound(enemyShotSound)
@@ -88,6 +88,14 @@ function goomba:upCollide(name, data)
     if name == "koopagreen" then
         return false
     end
+
+    if name == "goomba" then
+        return false
+    end
+
+    if name == "mario" then
+        return false
+    end
 end
 
 function goomba:downCollide(name, data)
@@ -98,11 +106,32 @@ function goomba:downCollide(name, data)
     if name == "koopagreen" then
         return false
     end
+
+    if name == "goomba" then
+        return false
+    end
+    
+    if name == "mario" then
+        data:shrink()
+        return false
+    end
+
+    if name == "tile" then
+        if data.hit then
+            self:shotted("right")
+            return false
+        end
+    end
 end
 
 function goomba:leftCollide(name, data)
-    if name == "tile" then
+    if name == "tile" or name == "goomba" then
         self.speedx = -self.speedx
+        return false
+    end
+
+    if name == "mario" then
+        data:shrink()
         return false
     end
 
@@ -119,8 +148,13 @@ function goomba:leftCollide(name, data)
 end
 
 function goomba:rightCollide(name, data)
-    if name == "tile" then
+    if name == "tile" or name == "goomba" then
         self.speedx = -self.speedx
+        return false
+    end
+
+    if name == "mario" then
+        data:shrink()
         return false
     end
 

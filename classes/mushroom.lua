@@ -12,12 +12,10 @@ function mushroom:init(x, y, screen)
 
     self.quadi = 1
 
+    self.category = 9
     self.mask =
     {
-        "tile",
-        "mario",
-        "coinblock",
-        "portal"
+        true, true, true, true, true
     }
 
     self.zOrder = 1
@@ -45,18 +43,8 @@ function mushroom:update(dt)
             self.initial = true
             self.static = false
             self.speedx = -48
-            self.gravity = 8
+            self.gravity = 840
         end 
-    end
-
-    if not inCamera(self) then
-        if self.deSpawn > 0 then
-            self.deSpawn = self.deSpawn + dt
-        else
-            self.remove = true
-        end
-    else
-        self.deSpawn = 0.5
     end
 end
 

@@ -28,6 +28,8 @@ function tiled:loadMap(path)
     self.music = {["top"] = "", ["bottom"] = ""}
     self.backgrounds = {["top"] = nil, ["bottom"] = nil}
 
+    self.backgroundScrolls = {0, 0}
+
     self:loadData("top")
     self:loadData("bottom")
 end
@@ -79,8 +81,20 @@ function tiled:loadData(screen)
     end
 end
 
-function tiled:getBackground(screen)
-    return self.backgrounds[screen]
+function tiled:renderBackground()
+    if self.backgrounds[player.screen] then
+        for x = 1, math.ceil(self.backgrounds[player.screen]:getWidth() / self.mapWidth[player.screen]) do
+            love.graphics.setScissor(0, 8, 400, 240)
+
+            love.graphics.draw(self.backgrounds[player.screen], 0 + (x - 1) * self.backgrounds[player.screen]:getWidth(), 8)
+
+            love.graphics.setScissor()
+        end
+    end
+end
+
+function tiled:getBackgroundColor()
+    return backgroundColors[backgroundColori[player.screen]]
 end
 
 function tiled:changeSong(screen)

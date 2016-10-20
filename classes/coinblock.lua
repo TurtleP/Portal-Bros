@@ -10,6 +10,8 @@ function coinblock:init(x, y, properties, screen)
     self.timer = 0
     self.quadi = 1
 
+    self.category = 3
+
     self.active = true
     self.static = true
     self.screen = screen

@@ -77,7 +77,7 @@ end
 
 local olddofile = dofile
 function dofile(...)
-	return love.filesystem.load(...)()
+	return love.filesystem.load(...)
 end
 
 local oldRectangle = love.graphics.rectangle

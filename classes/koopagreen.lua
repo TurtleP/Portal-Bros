@@ -7,11 +7,12 @@ function koopagreen:init(x, y, properties, screen)
     self.width = 16
     self.height = 24
 
+    self.category = 7
+    
     self.mask =
     {
-        "portal",
-        "tile",
-        "goomba"
+        true, true, true, 
+        true, true, true
     }
 
     self.portalable = true

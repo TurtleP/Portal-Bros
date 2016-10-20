@@ -21,10 +21,8 @@ function portalshot:init(x, y, i, angle, screen)
 
     self.mask =
     {
-        "tile",
-        "coinblock",
-        "pipe",
-        "portal"
+        true, false, true, 
+        true, true
     }
 
     self.gravity = 0
