@@ -39,8 +39,9 @@ function gameInit()
     end
 end
 
-function fontPrint(text, x, y)
+function fontPrint(text, x, y, color)
     local startx = x
+    local color = color or {255, 255, 255}
     for i = 1, #text do
         if text:sub(i, i) == "|"then
             startx = x - i * 9
@@ -49,7 +50,7 @@ function fontPrint(text, x, y)
             love.graphics.setColor(0, 0, 0)
             love.graphics.draw(fontImage, fontQuads[text:sub(i, i)], (startx - 1) + (i - 1) * 9, y - 1)
             
-            love.graphics.setColor(255, 255, 255)
+            love.graphics.setColor(unpack(color))
             love.graphics.draw(fontImage, fontQuads[text:sub(i, i)], startx + (i - 1) * 9, y)
         end
     end
@@ -120,8 +121,6 @@ function gameUpdate(dt)
     cameraObjects = checkCamera(getScrollValue(), 0, 400, 248)
     cameraOtherObjects = checkCamera(getScrollValue(), 0, 432, 248)
 
-    player:update(dt)
-
     for k, v in ipairs(scoreTexts) do
         if v.remove then
             table.remove(scoreTexts, k)
@@ -138,6 +137,17 @@ function gameUpdate(dt)
     gamepad:update(dt)
 
     physicsupdate(dt)
+end
+
+function gameDrawHUD()
+    fontPrint("mario|" .. addZeros(marioScore, 6), love.graphics.getWidth() * 0.08, 16)
+
+    love.graphics.draw(coinAnimationImage, coinAnimationQuads[coinCounterQuadi], love.graphics.getWidth() * 0.34, 24)
+    fontPrint("*" .. addZeros(coinCount, 2), love.graphics.getWidth() * 0.36, 24)
+
+    fontPrint("world| 1-1", love.graphics.getWidth() * 0.57, 16)
+
+    fontPrint("time|" .. leveltime, love.graphics.getWidth() * 0.8, 16)
 end
 
 function gameDraw()
@@ -174,15 +184,8 @@ function gameDraw()
     love.graphics.pop()
 
     love.graphics.setScreen(objects["mario"][1].screen)
-    love.graphics.setColor(255, 255, 255)
-    fontPrint("mario|" .. addZeros(marioScore, 6), love.graphics.getWidth() * 0.08, 16)
 
-    love.graphics.draw(coinAnimationImage, coinAnimationQuads[coinCounterQuadi], love.graphics.getWidth() * 0.34, 24)
-    fontPrint("*" .. addZeros(coinCount, 2), love.graphics.getWidth() * 0.36, 24)
-
-    fontPrint("world| 1-1", love.graphics.getWidth() * 0.57, 16)
-
-    fontPrint("time|" .. leveltime, love.graphics.getWidth() * 0.8, 16)
+    gameDrawHUD()
 
     gamepad:draw()
 end
