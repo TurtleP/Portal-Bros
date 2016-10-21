@@ -1,6 +1,7 @@
-function gameInit()
+function gameInit(menu)
     --GAME STUFF BELOW--
-    tiled:loadMap("maps/smb/1-1")
+
+    tiled:loadMap("maps/smb/" .. marioWorld .. "-" .. marioLevel)
 
     objects = {}
     objects["tile"] = tiled:getTiles()
@@ -23,6 +24,10 @@ function gameInit()
 
     player = objects["mario"][1]
     
+    if not menu then
+        tiled:changeSong(player.screen)
+    end
+
     scoreTexts = {}
 
     marioScore = 0
@@ -137,6 +142,12 @@ function gameUpdate(dt)
     gamepad:update(dt)
 
     physicsupdate(dt)
+
+    if player.y > util.getHeight() then
+        if not deathSound:isPlaying() then
+            util.changeState("levelscreen")
+        end
+    end
 end
 
 function gameDrawHUD()
@@ -145,7 +156,7 @@ function gameDrawHUD()
     love.graphics.draw(coinAnimationImage, coinAnimationQuads[coinCounterQuadi], love.graphics.getWidth() * 0.34, 24)
     fontPrint("*" .. addZeros(coinCount, 2), love.graphics.getWidth() * 0.36, 24)
 
-    fontPrint("world| 1-1", love.graphics.getWidth() * 0.57, 16)
+    fontPrint("world| " .. marioWorld .. "-" .. marioLevel, love.graphics.getWidth() * 0.57, 16)
 
     fontPrint("time|" .. leveltime, love.graphics.getWidth() * 0.8, 16)
 end

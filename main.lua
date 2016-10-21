@@ -206,6 +206,9 @@ function love.load()
     }
 	scale = 1
 
+    marioWorld = 1
+    marioLevel = 1
+    
     --GAME STUFF BELOW--
     gamepad = joystick:new()
 
