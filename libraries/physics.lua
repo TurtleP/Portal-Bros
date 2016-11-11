@@ -31,15 +31,45 @@ function physicsupdate(dt)
 	for cameraIndex = 1, #cameraObjects do
 		local objName, objData, objIndex = cameraObjects[cameraIndex][1], cameraObjects[cameraIndex][2], cameraObjects[cameraIndex][3]
 		
+		local screen = "top"
+		if objects["mario"][1] then
+			screen = objects["mario"][1].screen
+		end
+
 		if cameraObjects[cameraIndex][1] ~= "tile" then
 			if objData.active and not objData.static then
 				local hor, ver = false, false
 
 				objData.speedy = math.min(objData.speedy + objData.gravity * dt, 15 * 60) --add gravity to objects
 
+				--VS TILES (Because I only wanna check close ones)
+				local xstart = math.floor( (objData.x + objData.speedx * dt) / 16 - 2/16) + 1
+				local ystart = math.floor( (objData.y + objData.speedy * dt) / 16 - 2/16) + 1
+					
+				local xfrom = xstart
+				local xto = xstart + math.ceil(objData.width / 16)
+				local dir = 1
+					
+				if objData.speedx < 0 then
+					xfrom, xto = xto, xfrom
+					dir = -1
+				end
+					
+				for x = xfrom, xto, dir do
+					for y = ystart, ystart + math.ceil(objData.height / 16) do
+						local t = objects["tile"][x .. "-" .. screen .. "-" .. y]
+						if t then
+							if t.active and objData.mask[t.category] and not objData.passive then
+								hor, ver = checkCollision(objData, objName, t, "tile", dt)
+							end
+						end
+					end
+				end
+
+				--VS THINGS NOT TILES
 				if objData.mask and not objData.passive then
 					for i = 1, #cameraOtherObjects do
-						if objData ~= cameraOtherObjects[i][2] then
+						if objData ~= cameraOtherObjects[i][2] and cameraOtherObjects[i][1] ~= "tile" then
 							if objData.mask[cameraOtherObjects[i][2].category] then
 								local obj2Data = cameraOtherObjects[i][2]
 
@@ -59,7 +89,7 @@ function physicsupdate(dt)
 			end
 		end
 
-		if objData.screen == player.screen then
+		if objData.screen == screen then
 			if objData.remove then
 				table.remove(objects[objName], objIndex)
 			end
@@ -101,8 +131,16 @@ function checkCamera(x, y, width, height)
 	local ret = {}
 
 	for k, v in pairs(objects) do
-		for j, w in ipairs(v) do
-			if w.active and w.screen == player.screen then
+		if k ~= "tile" then
+			for j, w in ipairs(v) do
+				if w.active and w.screen == player.screen then
+					if aabb(x, y, width, height, w.x, w.y, w.width, w.height) then
+						table.insert(ret, {k, w, j})
+					end
+				end
+			end
+		else
+			for j, w in pairs(v) do
 				if aabb(x, y, width, height, w.x, w.y, w.width, w.height) then
 					table.insert(ret, {k, w, j})
 				end

@@ -10,8 +10,8 @@ function goomba:init(x, y, properties, screen)
     self.x = x + add
     self.y = y
 
-    self.width = 16
-    self.height = 16
+    self.width = 12
+    self.height = 12
 
     self.category = 6
     self.mask =
@@ -55,7 +55,7 @@ function goomba:draw()
         love.graphics.setScissor(unpack(self.scissor))
     end
 
-    love.graphics.draw(goombaImage, goombaQuads[1][self.quadi], self.x, self.y)
+    love.graphics.draw(goombaImage, goombaQuads[1][self.quadi], self.x + (self.width / 2) - 8, self.y - 4)
 
     if self.scissor then
         love.graphics.setScissor()

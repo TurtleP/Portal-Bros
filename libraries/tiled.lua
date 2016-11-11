@@ -67,7 +67,7 @@ function tiled:loadData(screen)
             if r > 0 then
                 local properties = {}
                 if not tileProperties[r] or tileProperties[r].breakable or tileProperties[r].passive then
-                    table.insert(self.tiles, tile:new((x - 1) * 16, (y - 1) * 16, r, tileProperties[r], screen))
+                    self.tiles[x .. "-" .. screen .. "-" .. y] = tile:new((x - 1) * 16, (y - 1) * 16, r, tileProperties[r], screen)
                 end   
             end
         end
